@@ -41,12 +41,16 @@ public class LancamentoResource {
 	public ResponseEntity<Object> buscar(@RequestParam(value = "descricao", required = false) String descricao,
 			@RequestParam(value = "mes", required = false) Integer mes,
 			@RequestParam(value = "ano", required = false) Integer ano,
+			@RequestParam(value = "tipo", required = false) TipoLancamento tipo,
+			@RequestParam(value = "status", required = false) StatusLancamento status,
 			@RequestParam(value = "usuario") Long idUsuario) {
 
 		Lancamento lancamentoFiltro = new Lancamento();
 		lancamentoFiltro.setDescricao(descricao);
 		lancamentoFiltro.setMes(mes);
 		lancamentoFiltro.setAno(ano);
+		lancamentoFiltro.setTipo(tipo);
+		lancamentoFiltro.setStatus(status);
 
 		Optional<Usuario> usuario = usuarioService.obterPorId(idUsuario);
 		if (!usuario.isPresent()) {

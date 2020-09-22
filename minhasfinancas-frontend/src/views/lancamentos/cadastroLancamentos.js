@@ -9,7 +9,7 @@ import * as messages from "../../components/toastr";
 
 import LancamentoService from "../../app/services/lancamentoService";
 import LocalStorageService from "../../app/services/localstorageService";
-import {USUARIO_LOGADO}    from "../../app/services/autenticarService";
+import { USUARIO_LOGADO } from "../../app/services/autenticarService";
 
 class CadastroLancamentos extends React.Component {
 
@@ -31,28 +31,27 @@ class CadastroLancamentos extends React.Component {
     }
 
     componentDidMount() {
-       const params =  this.props.match.params
+        const params = this.props.match.params
 
-       if(params.id) {
-           this.service.obterPorId(params.id)
-               .then(response => {
-                   this.setState({...response.data, atualizando: true})
-               }).catch(error => {
-                messages.mensagemErro(error.response.data)
-               })
-       }
+        if (params.id) {
+            this.service.obterPorId(params.id)
+                .then(response => {
+                    this.setState({ ...response.data, atualizando: true })
+                }).catch(error => {
+                    messages.mensagemErro(error.response.data)
+                })
+        }
     }
 
     submit = () => {
 
         const usuarioLogado = LocalStorageService.obterItem(USUARIO_LOGADO);
-    
-        const {descricao, valor, mes, ano, tipo } = this.state;
-        const lancamento = {descricao, valor, mes, ano, tipo, usuario: usuarioLogado.id };
+        const { descricao, valor, mes, ano, tipo } = this.state;
+        const lancamento = { descricao, valor, mes, ano, tipo, usuario: usuarioLogado.id };
 
         try {
             this.service.validar(lancamento)
-        } catch(erro) {
+        } catch (erro) {
             const mensagens = erro.mensagens;
             mensagens.forEach(msg => messages.mensagemErro(msg));
             return false;
@@ -61,7 +60,7 @@ class CadastroLancamentos extends React.Component {
         this.service
             .salvar(lancamento)
             .then(response => {
-                this.props.history.push("/consulta-lancamentos")
+                this.setState({ descricao: "", ano: "", mes: "", valor: "", tipo: "" })
                 messages.mensagemSucesso("Lançamento cadastrado com sucesso!")
             }).catch(error => {
                 messages.mensagemErro(error.response.data)
@@ -70,8 +69,8 @@ class CadastroLancamentos extends React.Component {
 
     atualizar = () => {
 
-        const {descricao, valor, mes, ano, tipo, status, id, usuario } = this.state;
-        const lancamento = {descricao, valor, mes, ano, tipo, status, id, usuario };
+        const { descricao, valor, mes, ano, tipo, status, id, usuario } = this.state;
+        const lancamento = { descricao, valor, mes, ano, tipo, status, id, usuario };
         this.service
             .atualizar(lancamento)
             .then(response => {
@@ -95,15 +94,15 @@ class CadastroLancamentos extends React.Component {
         const meses = this.service.obterListaMeses();
 
         return (
-            <Card title= {this.state.atualizando ? "Atualização de Lançamento" : "Cadastro de Lançamento"}>
+            <Card title={this.state.atualizando ? "Atualização de Lançamento" : "Cadastro de Lançamento"}>
                 <div className="row">
                     <div className="col-md-12">
                         <FormGroup id="inputDescricao" label="Descrição: *">
                             <input id="inputDescricao" type="text"
                                 name="descricao"
                                 value={this.state.descricao}
-                                onChange={this.handleChange} 
-                                className="form-control"/>
+                                onChange={this.handleChange}
+                                className="form-control" />
                         </FormGroup>
                     </div>
                 </div>
@@ -134,8 +133,8 @@ class CadastroLancamentos extends React.Component {
                                 type="text"
                                 name="valor"
                                 value={this.state.valor}
-                                onChange={this.handleChange} 
-                                className="form-control"/>
+                                onChange={this.handleChange}
+                                className="form-control" />
                         </FormGroup>
                     </div>
                     <div className="col-md-4">
@@ -160,20 +159,20 @@ class CadastroLancamentos extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        { this.state.atualizando ?
+                        {this.state.atualizando ?
                             (
-                                <button onClick={this.atualizar} type="button" 
-                                        className="btn btn-success">
-                                        <i className="pi pi-save"></i> Atualizar </button>
+                                <button onClick={this.atualizar} type="button"
+                                    className="btn btn-success">
+                                    <i className="pi pi-save"></i> Atualizar </button>
                             ) : (
-                                <button onClick={this.submit} type="button" 
-                                        className="btn btn-success"> 
-                                        <i className="pi pi-save"></i> Salvar </button>
+                                <button onClick={this.submit} type="button"
+                                    className="btn btn-success">
+                                    <i className="pi pi-save"></i> Salvar </button>
                             )
                         }
-                        <button onClick={e => this.props.history.push("/consulta-lancamentos")} 
-                                type="button" 
-                                className="btn btn-danger"> <i className="pi pi-undo"></i> Voltar </button>
+                        <button onClick={e => this.props.history.push("/consulta-lancamentos")}
+                            type="button"
+                            className="btn btn-danger"> <i className="pi pi-undo"></i> Consultar </button>
                     </div>
                 </div>
             </Card>

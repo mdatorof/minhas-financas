@@ -20,6 +20,7 @@ class ConsultaLancamentos extends React.Component {
     ano: "",
     mes: "",
     tipo: "",
+    status: "",
     descricao: "",
     showConfirmDialog: false,
     lancamentoDeletar: {},
@@ -44,7 +45,8 @@ class ConsultaLancamentos extends React.Component {
       ano: this.state.ano,
       mes: this.state.mes,
       tipo: this.state.tipo,
-      descricao: this.state.descricao
+      descricao: this.state.descricao,
+      status: this.state.status
     }
 
     this.service
@@ -105,6 +107,7 @@ class ConsultaLancamentos extends React.Component {
   render() {
     const meses = this.service.obterListaMeses();
     const tipos = this.service.obterListaTipos();
+    const status = this.service.obterListaStatus();
 
     const confirmDialogFooter = (
       <div>
@@ -155,6 +158,14 @@ class ConsultaLancamentos extends React.Component {
                   onChange={e => this.setState({ tipo: e.target.value })}
                   className="form-control"
                   lista={tipos} />
+              </FormGroup>
+
+              <FormGroup label="Situação do Lançamento: " htmlFor="inputSituacao">
+                <SelectMenu id="inputSituacao"
+                  value={this.state.status}
+                  onChange={e => this.setState({ status: e.target.value })}
+                  className="form-control"
+                  lista={status} />
               </FormGroup>
 
               <button

@@ -33,6 +33,15 @@ class LancamentoService extends ApiService {
         ]
     }
 
+    obterListaStatus() {
+        return  [
+            {label:"Selecione...", value:""},
+            {label:"Pendente", value:"PENDENTE"},
+            {label:"Efetivado", value:"EFETIVADO"},
+            {label:"Cancelado", value:"CANCELADO"}
+        ]
+    }
+
     obterPorId(id) {
         return this.get(`/${id}`);
     }
